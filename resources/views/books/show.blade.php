@@ -12,13 +12,20 @@
 			{{ __('Edit') }}
 		</a>
 		@component('components.btn-del')
-			@slot('table', 'books')
+			@slot('controller', 'books')
 			@slot('id', $book->id)
+			@slot('name', $book->name)
 		@endcomponent
 	</div>
 
 	{{-- 記事内容 --}}
 	<dl class="row">
+		<dt class="col-md-2">{{ __('User') }}:</dt>
+		<dd class="col-md-10">
+			<a href="{{ url('users/' . $book->user->id) }}">
+				{{ $book->user->name }}
+			</a>
+		</dd>
 		<dt class="col-md-2">{{ __('Created') }}:</dt>
 		<dd class="col-md-10">
 			<time itemprop="dateCreated" datetime="{{ $book->created_at }}">

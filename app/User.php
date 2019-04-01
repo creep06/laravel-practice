@@ -27,4 +27,11 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+
+	public function books()
+	{
+		// 本を新しい順で取得
+		return $this->hasMany('App\Book')->latest();
+	}
 }

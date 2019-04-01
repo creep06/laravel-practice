@@ -9,6 +9,7 @@
 		<table class="table table-striped">
 			<thead>
 				<tr>
+					<th>{{ __('User') }}</th>
 					<th>{{ __('Title') }}</th>
 					<th>{{ __('Phonetic') }}</th>
 					<th>{{ __('Created') }}</th>
@@ -18,6 +19,11 @@
 			<tbody>
 			@foreach ($books as $book)
 				<tr>
+					<td>
+						<a href="{{ url('users/' . $book->user->id) }}">
+							{{ $book->user->name }}
+						</a>
+					</td>
 					<td>
 						<a href="{{ url('books/'.$book->id) }}">{{ $book->name }}</a>
 					</td>
@@ -29,5 +35,6 @@
 			</tbody>
 		</table>
 	</div>
+	{{ $books->links() }}
 </div>
 @endsection

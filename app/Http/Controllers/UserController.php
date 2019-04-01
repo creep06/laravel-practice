@@ -10,7 +10,7 @@ class UserController extends Controller
 	// ユーザー一覧表示
 	public function index()
 	{
-		$users = User::all();
+		$users = User::paginate(10);
 		return view('users.index', ['users' => $users]);
 	}
 
@@ -35,6 +35,8 @@ class UserController extends Controller
 	// $userのページを表示
 	public function show(User $user)
 	{
+		// 最新5冊を取得
+		$user->books = $user->books()->paginate(5);
 		return view('users.show', ['user' => $user]);
 	}
 

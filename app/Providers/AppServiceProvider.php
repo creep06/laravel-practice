@@ -6,23 +6,26 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        //
-    }
+	/**
+	 * Bootstrap any application services.
+	 *
+	 * @return void
+	 */
+	public function boot()
+	{
+		// sqliteで外部キー制約を有効にする
+		if (\DB::getDriverName() == 'sqlite') {
+			\DB::statement(\DB::raw('PRAGMA foreign_keys=1'));
+		}
+	}
 
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        //
-    }
+	/**
+	 * Register any application services.
+	 *
+	 * @return void
+	 */
+	public function register()
+	{
+		//
+	}
 }

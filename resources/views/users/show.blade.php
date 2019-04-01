@@ -12,8 +12,9 @@
 			{{ __('Edit') }}
 		</a>
 		@component('components.btn-del')
-		@slot('table', 'users')
-		@slot('id', $user->id)
+			@slot('controller', 'users')
+			@slot('id', $user->id)
+			@slot('name', $user->name)
 		@endcomponent
 	</div>
 
@@ -26,5 +27,48 @@
 		<dt class="col-md-2">{{ __('E-Mail Address') }}</dt>
 		<dd class="col-md-10">{{ $user->email }}</dd>
 	</dl>
+
+	{{-- ユーザーの本一覧 --}}
+	<h2>{{ __('Books') }}</h2>
+	<div class="table-responsive">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>{{ __('Name') }}</th>
+					<th>{{ __('Phonetic') }}</th>
+					<th>{{ __('Created') }}</th>
+					<th>{{ __('Updated') }}</th>
+
+					{{-- 本の編集・削除ボタンのカラム --}}
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach ($user->books as $book)
+					<tr>
+						<td>
+							<a href="{{ url('books/' . $book->id) }}">
+								{{ $book->name }}
+							</a>
+						</td>
+						<td>{{ $book->phonetic }}</td>
+						<td>{{ $book->created_at }}</td>
+						<td>{{ $book->updated_at }}</td>
+						<td nowrap>
+							<a href="{{ url('books/' . $book->id . '/edit') }}" class="btn btn-primary">
+								{{ __('Edit') }}
+							</a>
+							@component('components.btn-del')
+								@slot('controller', 'books')
+								@slot('id', $book->id)
+								@slot('name', $book->name)
+							@endcomponent
+						</td>
+					 </tr>
+				@endforeach
+			</tbody>
+		</table>
+	</div>
+	{{ $user->books->links() }}
 </div>
 @endsection
