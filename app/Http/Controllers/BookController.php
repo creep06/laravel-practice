@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Book;
+use App\Http\Requests\StoreBook;
 
 class BookController extends Controller
 {
@@ -24,7 +25,7 @@ class BookController extends Controller
 		return view('books.create');
 	}
 
-	public function store(Request $request)
+	public function store(StorePost $request)
 	{
 		$book = new Book;
 		$book->name = $request->name;
@@ -45,7 +46,7 @@ class BookController extends Controller
 		return view('books.edit', ['book' => $book]);
 	}
 
-	public function update(Request $request, Book $book)
+	public function update(StorePost $request, Book $book)
 	{
 		$this->authorize('edit', $book);
 		$book->name = $request->name;

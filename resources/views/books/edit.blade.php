@@ -10,11 +10,11 @@
 		@method('PUT')
 		<div class="form-group">
 			<label for="name">{{ __('Name') }}</label>
-			<input id="name" type="text" class="form-control" name="name" value="{{ $book->name }}" required autofocus>
+			<input id="name" type="text" class="form-control @if ($errors->has('name')) is-invalid @endif" name="name" value="{{ old('name', $book->name) }}" required autofocus>
 		</div>
 		<div class="form-group">
 			<label for="phonetic">{{ __('Phonetic') }}</label>
-			<textarea id="phonetic" class="form-control" name="phonetic" rows="8" required>{{ $book->phonetic }}</textarea>
+			<input id="phonetic" type="text" class="form-control @if ($errors->has('phonetic')) is-invalid @endif" name="phonetic" value="{{ old('phonetic', $book->phonetic) }}">
 		</div>
 		<button type="submit" name="submit" class="btn btn-primary">{{ __('Submit') }}</button>
 	</form>

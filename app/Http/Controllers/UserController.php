@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Http\Requests\StoreUser;
 
 class UserController extends Controller
 {
@@ -30,7 +31,7 @@ class UserController extends Controller
 
 	// 新規登録処理
 	// そのままユーザーページへリダイレクト
-	public function store(Request $request)
+	public function store(StoreUser $request)
 	{
 		$user = new User;
 		$user->name = $request->name;
@@ -57,9 +58,14 @@ class UserController extends Controller
 
 	// 更新処理
 	// そのままユーザーページへリダイレクト
+	// RequestじゃなくStoreUserにすると全部validation検査できるけどupdateではnameしか変更できないからそこまで要らない
 	public function update(Request $request, User $user)
 	{
 		$this->authorize('edit', $user);
+		// name欄だけ検査する
+		$request->validate([
+			'name' => (new StoreUser())->rules()['name']
+		]);
 		$user->name = $request->name;
 		$user->save();
 		return redirect('users/'.$user->id);
