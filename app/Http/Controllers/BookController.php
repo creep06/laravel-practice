@@ -32,7 +32,7 @@ class BookController extends Controller
 		$book->phonetic = $request->phonetic;
 		$book->user_id = $request->user()->id;
 		$book->save();
-		return redirect('books/'.$book->id);
+		return redirect('books/'.$book->id)->with('my_status', __('Posted new article.'));
 	}
 
 	public function show(Book $book)
@@ -52,13 +52,13 @@ class BookController extends Controller
 		$book->name = $request->name;
 		$book->phonetic = $request->phonetic;
 		$book->save();
-		return redirect('books/'.$book->id);
+		return redirect('books/'.$book->id)->with('my_status', __('Updated an article.'));
 	}
 
 	public function destroy(Book $book)
 	{
 		$this->authorize('edit', $book);
 		$book->delete();
-		return redirect('books');
+		return redirect('books')->with('my_status', __('Deleted an article.'));
 	}
 }
