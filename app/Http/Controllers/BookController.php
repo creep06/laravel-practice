@@ -7,6 +7,12 @@ use App\Book;
 
 class BookController extends Controller
 {
+	// 各アクションの前に実行させるミドルウェア
+	public function __construct()
+	{
+		$this->middleware('verified')->except(['index', 'show']);
+	}
+
 	public function index()
 	{
 		$books = Book::latest()->paginate(10);
@@ -23,6 +29,7 @@ class BookController extends Controller
 		$book = new Book;
 		$book->name = $request->name;
 		$book->phonetic = $request->phonetic;
+		$book->user_id = $request->user()->id;
 		$book->save();
 		return redirect('books/'.$book->id);
 	}
@@ -34,11 +41,13 @@ class BookController extends Controller
 
 	public function edit(Book $book)
 	{
+		$this->authorize('edit', $book);
 		return view('books.edit', ['book' => $book]);
 	}
 
 	public function update(Request $request, Book $book)
 	{
+		$this->authorize('edit', $book);
 		$book->name = $request->name;
 		$book->phonetic = $request->phonetic;
 		$book->save();
@@ -47,6 +56,7 @@ class BookController extends Controller
 
 	public function destroy(Book $book)
 	{
+		$this->authorize('edit', $book);
 		$book->delete();
 		return redirect('books');
 	}

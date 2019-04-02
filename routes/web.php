@@ -19,7 +19,7 @@ Route::get('foo', function () {
 	return 'Foo!';
 });
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 Route::get('/', function() {
 	return view('top');

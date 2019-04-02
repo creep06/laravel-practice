@@ -17,6 +17,9 @@ class AppServiceProvider extends ServiceProvider
 		if (\DB::getDriverName() == 'sqlite') {
 			\DB::statement(\DB::raw('PRAGMA foreign_keys=1'));
 		}
+
+		// グローバル変数 管理者のidを1とする
+		config(['admin_id' => 1]);
 	}
 
 	/**

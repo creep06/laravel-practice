@@ -7,16 +7,18 @@
 	<h1>{{ $title }}</h1>
 
 	{{-- 編集・削除ボタン --}}
-	<div>
-		<a href="{{ url('users/'.$user->id.'/edit') }}" class="btn btn-primary">
-			{{ __('Edit') }}
-		</a>
-		@component('components.btn-del')
-			@slot('controller', 'users')
-			@slot('id', $user->id)
-			@slot('name', $user->name)
-		@endcomponent
-	</div>
+	@can('edit', $user)
+		<div>
+			<a href="{{ url('users/'.$user->id.'/edit') }}" class="btn btn-primary">
+				{{ __('Edit') }}
+			</a>
+			@component('components.btn-del')
+				@slot('controller', 'users')
+				@slot('id', $user->id)
+				@slot('name', $user->name)
+			@endcomponent
+		</div>
+	@endcan
 
 	{{-- ユーザー1件の情報 --}}
 	<dl class="row">
@@ -40,7 +42,7 @@
 					<th>{{ __('Updated') }}</th>
 
 					{{-- 本の編集・削除ボタンのカラム --}}
-					<th></th>
+					@can('edit', $user) <th></th> @endcan
 				</tr>
 			</thead>
 			<tbody>
@@ -54,16 +56,18 @@
 						<td>{{ $book->phonetic }}</td>
 						<td>{{ $book->created_at }}</td>
 						<td>{{ $book->updated_at }}</td>
-						<td nowrap>
-							<a href="{{ url('books/' . $book->id . '/edit') }}" class="btn btn-primary">
-								{{ __('Edit') }}
-							</a>
-							@component('components.btn-del')
-								@slot('controller', 'books')
-								@slot('id', $book->id)
-								@slot('name', $book->name)
-							@endcomponent
-						</td>
+						@can('edit', $user)
+							<td nowrap>
+								<a href="{{ url('books/' . $book->id . '/edit') }}" class="btn btn-primary">
+									{{ __('Edit') }}
+								</a>
+								@component('components.btn-del')
+									@slot('controller', 'books')
+									@slot('id', $book->id)
+									@slot('name', $book->name)
+								@endcomponent
+							</td>
+						@endcan
 					 </tr>
 				@endforeach
 			</tbody>

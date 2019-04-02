@@ -7,6 +7,14 @@ use App\User;
 
 class UserController extends Controller
 {
+	// 各アクションの前に実行させるミドルウェア
+	public function __construct()
+	{
+		// メール認証前でもアカウント削除は許可
+		$this->middleware('auth')->except(['destroy']);
+		$this->middleware('verified')->except(['index', 'show', 'destroy']);
+	}
+
 	// ユーザー一覧表示
 	public function index()
 	{
@@ -43,6 +51,7 @@ class UserController extends Controller
 	// 更新フォームへ移動
 	public function edit(User $user)
 	{
+		$this->authorize('edit', $user);
 		return view('users.edit', ['user' => $user]);
 	}
 
@@ -50,6 +59,7 @@ class UserController extends Controller
 	// そのままユーザーページへリダイレクト
 	public function update(Request $request, User $user)
 	{
+		$this->authorize('edit', $user);
 		$user->name = $request->name;
 		$user->save();
 		return redirect('users/'.$user->id);
@@ -59,6 +69,7 @@ class UserController extends Controller
 	// そのままユーザー一覧へリダイレクト
 	public function destroy(User $user)
 	{
+		$this->authorize('edit', $user);
 		$user->delete();
 		return redirect('users');
 	}

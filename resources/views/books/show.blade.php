@@ -7,16 +7,18 @@
 	<h1 id="book-name">{{ $title }}</h1>
 
 	{{-- 編集・削除ボタン --}}
-	<div class="edit">
-		<a href="{{ url('books/'.$book->id.'/edit') }}" class="btn btn-primary">
-			{{ __('Edit') }}
-		</a>
-		@component('components.btn-del')
-			@slot('controller', 'books')
-			@slot('id', $book->id)
-			@slot('name', $book->name)
-		@endcomponent
-	</div>
+	@can('edit', $book)
+		<div class="edit">
+			<a href="{{ url('books/'.$book->id.'/edit') }}" class="btn btn-primary">
+				{{ __('Edit') }}
+			</a>
+			@component('components.btn-del')
+				@slot('controller', 'books')
+				@slot('id', $book->id)
+				@slot('name', $book->name)
+			@endcomponent
+		</div>
+	@endcan
 
 	{{-- 記事内容 --}}
 	<dl class="row">
