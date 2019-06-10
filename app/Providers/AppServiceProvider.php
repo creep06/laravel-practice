@@ -22,9 +22,9 @@ class AppServiceProvider extends ServiceProvider
         config(['admin_id' => 1]);
 
         // herokuでhttps強制
-        if (\App::environment('production')) {
-            \URL::forceScheme('https');
-        }
+//        if (\App::environment('production')) {
+//            \URL::forceScheme('https');
+//        }
     }
 
     /**
