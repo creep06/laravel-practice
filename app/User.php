@@ -3,13 +3,15 @@
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Auth\MustVerifyEmail;
+use App\Notifications\CustomPasswordReset;
+use App\Notifications\CustomVerifyEmail;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmailContract
 {
-    use Notifiable;
-
+    use MustVerifyEmail, Notifiable;
     /**
      * The attributes that are mass assignable.
      *
@@ -18,7 +20,6 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $fillable = [
         'name', 'email', 'password',
     ];
-
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -27,23 +28,42 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $hidden = [
         'password', 'remember_token',
     ];
-
-
-    public function books()
+    /**
+     * リレーション (1対多の関係)
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function books() // 複数形
     {
-        // 本を新しい順で取得
+        // 記事を新しい順で取得する
         return $this->hasMany('App\Book')->latest();
     }
-
-    // Override
+    /**
+     * パスワードリセット通知の送信
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new CustomPasswordReset($token));
+    }
+    /**
+     * メール確認通知の送信
+     *
+     * @return void
+     */
     public function sendEmailVerificationNotification()
     {
-        $this->notify(new \App\Notifications\VerifyEmailJapanese);
+        $this->notify(new CustomVerifyEmail());
     }
-
-    // $userが管理者かどうか
-    public function isAdmin($id = null)
-    {
+    /**
+     * 現在のユーザー、または引数で渡されたIDが管理者かどうかを返す
+     *
+     * @param  number  $id  User ID
+     * @return boolean
+     */
+    public function isAdmin($id = null) {
         $id = ($id) ? $id : $this->id;
         return $id == config('admin_id');
     }

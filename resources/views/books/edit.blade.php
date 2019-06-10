@@ -1,7 +1,7 @@
 @php
     $title = __('Edit') . ': ' . $book->title;
 @endphp
-@extends('layouts.app')
+@extends('layouts.my')
 @section('content')
 <div class="container">
     <h1>{{ $title }}</h1>

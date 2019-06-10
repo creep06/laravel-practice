@@ -11,20 +11,13 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('foo', function () {
-	return 'Foo!';
+Route::get('/', function() {
+    return view('top');
 });
 
 Auth::routes(['verify' => true]);
 
-Route::get('/', function() {
-	return view('top');
-});
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('foo/foo4', 'FooController@foo4');
+
 Route::resource('users', 'UserController');
 Route::resource('books', 'BookController');

@@ -1,7 +1,7 @@
 @php
     $title = $book->title;
 @endphp
-@extends('layouts.app')
+@extends('layouts.my')
 @section('content')
 <div class="container">
     <h1 id="book-title">{{ $title }}</h1>

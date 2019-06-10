@@ -1,7 +1,7 @@
 @php
     $title = __('Verify Your Email Address');
 @endphp
-@extends('layouts.app')
+@extends('layouts.my')
 
 @section('content')
 <div class="container">
