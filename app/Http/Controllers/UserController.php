@@ -12,7 +12,7 @@ class UserController extends Controller
     public function __construct()
     {
         // メール認証前でもアカウント削除は許可
-        $this->middleware('auth')->except(['destroy']);
+        $this->middleware('auth')->only(['destroy']);
         $this->middleware('verified')->except(['index', 'show', 'destroy']);
     }
 
